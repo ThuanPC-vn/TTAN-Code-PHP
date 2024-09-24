@@ -2,7 +2,7 @@
 include('app/init.php');
 $Template->setData('page_class', 'shoppingcart');
 
-if (isset($_GET['id']) || is_numeric($_GET['id'])){
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     //check if adding a valid item
     if (!$Products->product_exists($_GET['id'])) {
       $Template->setAlert('Invalid Item');

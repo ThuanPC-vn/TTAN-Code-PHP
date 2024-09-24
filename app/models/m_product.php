@@ -56,7 +56,7 @@ class Products{
               }
               $items .= $item;
             }
-            $result = $this->Database->query("SELECT id_product, name_product, sub_name_product, img_product, price_product FROM $this->db_tableProduct WHERE id_product IN ($items) ORDER BY name");
+            $result = $this->Database->query("SELECT id_product, name_product, sub_name_product, img_product, price_product FROM $this->db_tableProduct WHERE id_product IN ($items) ORDER BY name_product");
             if ($result) {
               if ($result->num_rows > 0) {
                 while ($row = $result->fetch_array()) {
@@ -82,7 +82,7 @@ class Products{
             WHERE $this->db_tableProduct.id_product = ?");
             // get one specific product
             if ($stmt) {
-              $stmt->bind_param("s", $id);
+              $stmt->bind_param("i", $id);
               $stmt->execute();
               $stmt->store_result();
       
@@ -144,10 +144,10 @@ class Products{
       name_product,
       sub_name_product,
       img_product,
-      price_product FROM " . $this->db_tableProduct . " WHERE category_id = ? ORDER BY name");
+      price_product FROM " . $this->db_tableProduct . " WHERE id_category = ? ORDER BY name_product");
 
       if ($stmt) {
-        $stmt->bind_param("s", $id);
+        $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
@@ -190,7 +190,7 @@ class Products{
       }
 
       // get multiple product info based on list of ids
-      $result = $this->Database->query("SELECT id_product, price_product, FROM $this->db_tableProduct WHERE id IN ($items) ORDER BY name");
+      $result = $this->Database->query("SELECT id_product, price_product FROM $this->db_tableProduct WHERE id_product IN ($items) ORDER BY name_product");
       if ($result) {
         if ($result->num_rows > 0) {
           while ($row = $result->fetch_array()) {
@@ -206,15 +206,15 @@ class Products{
     * Checks to ensure that product exists
     * 
     * @access public
-    * @param img
+    * @param int
     * @return boolean
     */
 
     public function product_exists($id)
     {
-      $stmt = $this->Database->prepare("SELECT id_product FROM " . $this->db_tableProduct . " WHERE id =?");
+      $stmt = $this->Database->prepare("SELECT id_product FROM " . $this->db_tableProduct . " WHERE id_product =?");
       if ($stmt) {
-        $stmt->bind_param("s", $id);
+        $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->store_result();
         $stmt->bind_result($id);

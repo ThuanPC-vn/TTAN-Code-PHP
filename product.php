@@ -2,7 +2,7 @@
 include('app/init.php');
 $Template->setData('page_class', 'product');
 
-if (isset($_GET['id']) || is_numeric($_GET['id'])) {
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
   //show product
 
   $product = $Products->getProductData($_GET['id']);

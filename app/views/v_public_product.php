@@ -36,7 +36,7 @@ include("includes/public_header.php")
                         <p class = "product-description"><?php $this->getData('prod_subName'); ?></p>
                         <div class = "btn-groups">
                             <button type = "button" class = "add-cart-btn"><i class="ri-add-box-fill"></i>
-                            <a href="cart.php?id=<?php $this->getData('prod_id');?>" class="button">ADD TO CART</a>
+                                <a href="cart.php?id=<?php $this->getData('prod_id');?>">ADD TO CART</a>
                             </button>
                             <button type = "button" class = "buy-now-btn"><i class="ri-shopping-cart-fill"></i> BUY NOW</button>
                         </div>

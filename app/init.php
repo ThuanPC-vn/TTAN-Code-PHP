@@ -20,13 +20,19 @@ include('app/models/m_product.php');
 include('app/models/m_categories.php');
 include('app/models/m_template.php');
 include('app/models/m_cart.php');
+include('app/models/m_checkout.php');
 
 
 $Template = new Template();
 $Categories = new Categories($Database);
 $Products = new Products($Database);
 $Cart = new Cart();
+$Checkout = new Checkout($Database);
 
 session_start();
 
+
+// global
+$Template->setData('cart_total_items', $Cart->getTotalItems());
+$Template->setData('cart_total_cost', $Cart->getTotalCost());
 ?>
