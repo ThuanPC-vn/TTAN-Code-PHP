@@ -19,7 +19,7 @@ class Categories
 
             $id = mysqli_real_escape_string($this->Database, $id);
 
-            $stmt = $this->Database->prepare("SELECT id_category, name_category FROM " . $this->db_table . " WHERE id_category IN ($id) LIMIT 1");
+            $stmt = $this->Database->prepare("SELECT id_category, name_category FROM " . $this->db_table . " WHERE id_category = ? LIMIT 1");
 
             if ($stmt) {
                 $stmt->bind_param("i", $id);
@@ -55,16 +55,20 @@ class Categories
     {
         $categories = $this->getCategories();
 
-        $data = '';
-        // if (strtolower($active) === 'all') {
-        //     $data .= 'active-pro-all" ';
-        // }
-        // $data .= 'data-filter="' . SITE_PATH . '"><span>ALL</span></button></li>';
-
-        
+        $data = '<li><button class="pro__all__item ';
+        if (strtolower($active) === 'all') {
+            $data .= 'active-pro-all"><a href="' . SITE_PATH . 'index.php?id=1"><span>ALL</span></a></button></li>';
+        } else {
+            $data .= '"><a href="' . SITE_PATH . 'index.php?id=1"><span>ALL</span></a></button></li>';
+        }
 
         if (!empty($categories)) {
             foreach ($categories as $category) {
+
+                // skip "ALL" if it has already been added
+                if (strtolower($category['name']) === 'all') {
+                    continue;
+                }
 
                 $classNameIcon = '';
                 switch (htmlspecialchars($category['name'])) {
@@ -87,16 +91,16 @@ class Categories
 
                 $data .= '<li><button class="pro__all__item ';
                 if (strtolower($active) === strtolower($category['name'])) {
-                    $data .= 'active-pro-all" data-filter="' . SITE_PATH . 'index.php?id=' . $category['id'] . '"><span><i class="' . $classNameIcon . '"></i> ' . htmlspecialchars($category['name']) . '</span></button></li>';
+                    $data .= 'active-pro-all"><a href="' . SITE_PATH . 'index.php?id=' . $category['id'] . '"><span><i class="' . $classNameIcon . '"></i> ' . htmlspecialchars($category['name']) . '</span></a></button></li>';
+                } else {
+                    $data .= '"><a href="' . SITE_PATH . 'index.php?id=' . $category['id'] . '"><span><i class="' . $classNameIcon . '"></i> ' . htmlspecialchars($category['name']) . '</span></a></button></li>';
                 }
-                else{
-                    $data .= '"data-filter="' . SITE_PATH . 'index.php?id=' . $category['id'] . '"><span><i class="' . $classNameIcon . '"></i> ' . htmlspecialchars($category['name']) . '</span></button></li>';
-                }
-                
             }
         }
 
         return $data;
     }
+
+
 
 }

@@ -25,15 +25,15 @@ include("includes/public_header.php")
                             <div class="form">
                                 <div class="group">
                                     <label for="name">Full Name</label>
-                                    <input type="text" name="name" id="name">
+                                    <input type="text" name="name" id="name" required>
                                 </div>
                                 <div class="group">
                                     <label for="phone">Phone Number</label>
-                                    <input type="text" name="phone" id="phone">
+                                    <input type="text" name="phone" id="phone" required>
                                 </div>
                                 <div class="group">
                                     <label for="address">Address</label>
-                                    <input type="text" name="address" id="address">
+                                    <input type="text" name="address" id="address" required>
                                 </div>
                             </div>
 
@@ -47,7 +47,8 @@ include("includes/public_header.php")
                                     <div class="totalPrice"><?php $this->getData('total_amount'); ?></div>
                                 </div>
                             </div>
-                            <button type="submit" class="buttonCheckout" name="btn-checkout">CHECKOUT</button>
+                            <!-- <button type="submit" class="buttonCheckout" name="btn-checkout">CHECKOUT</button> -->
+                            <div type="submit" id="paypal-button-container" name="btn-checkout"></div>
                         </form>
                     </div>
                 </div>

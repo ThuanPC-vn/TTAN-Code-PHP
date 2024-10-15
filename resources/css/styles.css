@@ -429,6 +429,238 @@ body.light-theme{
 }
 
 
+/*=============== LOGIN FORM ===============*/
+.loginForm{
+  position: relative;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  margin-top: 10rem;
+  margin-bottom: 5rem;
+}
+
+
+.wrapper{
+  position: relative;
+  width: 850px;
+  height: 700px;
+  background: transparent;
+  border-radius: 20px;
+  border: 2px solid var(--first-color);
+  box-shadow: 0 0 25px var(--first-color);
+  overflow: hidden;
+}
+
+.wrapper .form-box{
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wrapper .form-box.login{
+  left: 0;
+  padding: 0 60px 0 40px;
+}
+
+.wrapper .form-box.login .animation{
+  transform: translateX(0);
+  opacity: 1;
+  filter: blur(0);
+  transition: .7s ease;
+  transition-delay: calc(.1s * var(--j));
+}
+
+.wrapper.active .form-box.login .animation{
+  transform: translateX(-120%);
+  opacity: 0;
+  filter: blur(10px);
+  transition-delay: calc(.1s * var(--i));
+}
+
+.wrapper .form-box.register{
+  right: 0;
+  top: 0;
+  padding: 0 40px 0 60px;
+  transition: top 1.2s ease;
+}
+
+.wrapper .form-box.register .animation{
+  transform: translateX(190%);
+  opacity: 0;
+  filter: blur(10px);
+  transition: .7s ease;
+}
+
+.wrapper.active .form-box.register .animation{
+  transform: translateX(0);
+  opacity: 1;
+  filter: blur(0px);
+  transition-delay: calc(.1s * var(--i));
+}
+
+.form-box h2{
+  font-size: var(--h1-font-size);
+  color: var(--first-color);
+  text-align: center;
+}
+
+.form-box .input-box{
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 25px 0;
+}
+
+.input-box input{
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--white-color);
+  border-bottom: 2px solid #fff;
+  padding-right: 23px;
+  transition: .5s;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+  border-bottom-color: var(--first-color);
+}
+
+.input-box label{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--white-color);
+  pointer-events: none;
+  transition: .5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label{
+  top: -5px;
+  color: var(--first-color);
+}
+
+.input-box i{
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--white-color);
+  transform: .5s;  
+}
+
+.input-box input:focus~i,
+.input-box input:valid~i{
+  color: var(--first-color);
+}
+
+.btn{
+  position: relative;
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  border: 2px solid var(--first-color);
+  outline: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--white-color);
+  font-weight: 600;
+  transition: .5s;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.btn:hover{
+  color: var(--first-color);
+}
+
+.btn::before{
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 300%;
+  background: linear-gradient(#081b29, rgb(248, 204, 133), #081b29, rgb(249, 168, 36));
+  z-index: -1;
+  transition: .5s;
+}
+
+.btn:hover::before{
+  color: var(--first-color);
+  top: 0;
+}
+
+.form-box .logreg-link{
+  font-size: 15px;
+  color: var(--white-color);
+  text-align: center;
+  margin: 20px 0 10px;
+}
+
+.logreg-link p a{
+  color: var(--first-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.logreg-link p a:hover{
+  color: var(--blue-clor);
+}
+
+.wrapper .bg-animate{
+  position: absolute;
+  top: -4px;
+  right: 0;
+  width: 900px;
+  height: 700px;
+  background: linear-gradient(45deg, #081b29, rgb(255, 160, 27));
+  transform: rotate(50deg) skew(40deg);
+  transform-origin: bottom right;
+  border-bottom: 3px solid var(--first-color);
+  transition: 1.5s ease;
+  transition-delay: 1.4s;
+}
+
+.wrapper.active .bg-animate{
+  transform: rotate(0) skew(0);
+  transition-delay: .5s;
+}
+
+.wrapper .bg-animate2{
+  position: absolute;
+  top: 100%;
+  left: 70%;
+  width: 1250px;
+  height: 800px;
+  background: #081b29;
+  transform: rotate(0) skew(0);
+  transform-origin: bottom left;
+  border-top: 3px solid var(--first-color);
+  transition: 1.5s ease;
+  transition-delay: .5s;
+}
+
+.wrapper.active .bg-animate2{
+  transform: rotate(-60deg) skew(-23deg);
+  transition-delay: 1.1s;
+}
+
+
 
 /*=============== BUTTON ===============*/
 .button{
@@ -567,6 +799,10 @@ body.light-theme{
   color: var(--pro-title);
 }
 
+.product__buttonview a{
+  color: var(--pro-title);
+}
+
 .product__card:hover .product__img{
   transform: translateY(-.25rem);
 }
@@ -678,6 +914,10 @@ body.light-theme{
   justify-items: center;
 }
 
+.pro__all__item a{
+  color: var(--white-color);
+}
+
 .item__img{
   width: 55px;
   height: 50px;
@@ -761,6 +1001,10 @@ body.light-theme{
   bottom: 0;
   border-radius: 1rem 0 1rem 0;
   cursor: pointer;
+  color: var(--pro-title);
+}
+
+.pro__all__button a{
   color: var(--pro-title);
 }
 

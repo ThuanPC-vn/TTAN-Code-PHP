@@ -235,6 +235,7 @@ themeButton.addEventListener('click', () => {
 
 
 
+
 /*=============== SCROLL REVEAL ANIMATION ===============*/
 const sr = ScrollReveal({
     origin: 'top',
@@ -248,11 +249,32 @@ sr.reveal(`.home__social, .products__container`)
 sr.reveal(`.home__title span:nth-child(1),  .pro__all, .product-div, .cardSuccess`, {origin: 'left', opacity: 0})
 sr.reveal(`.home__title span:nth-child(3),`, {origin: 'top', opacity: 0})
 sr.reveal(`.home__title span:nth-child(5),  .checkoutLayout`, {origin: 'right', opacity: 0})
-sr.reveal(`.home__tooltip, .home__button, .model__button`, {origin: 'bottom'})
+sr.reveal(`.home__tooltip, .home__button, .model__button, .wrapper`, {origin: 'bottom'})
 sr.reveal(`.about__data`, {origin: 'left'})
 sr.reveal(`.about__img, .model__tooltip`, {origin: 'right'})
 
 
+
+
+/*=============== ANIMATE LOGIN FORM ===============*/ 
+const wrapper = document.querySelector('.wrapper');
+const registerLink = document.querySelector('.register-link');
+const loginLink = document.querySelector('.login-link');
+const idRegister = document.getElementById('register__id'),
+      idLogin = document.getElementById('login__id')
+
+registerLink.onclick = () => {
+  wrapper.classList.add('active');
+  const registerFormBox = document.querySelector('.wrapper .form-box.register');
+  registerFormBox.style.top = '0';
+}
+      
+
+loginLink.onclick = () => {
+  wrapper.classList.remove('active');
+  const registerFormBox = document.querySelector('.wrapper .form-box.register');
+  registerFormBox.style.top = '100%';
+}
 
 
 

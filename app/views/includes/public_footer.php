@@ -67,13 +67,13 @@
                   </form>
 
                   <div class="footer__social">
-                     <a href="www.facebook.com" target="_blank" class="footer__social-link">
+                     <a href="https://www.facebook.com/" target="_blank" class="footer__social-link">
                         <i class="ri-facebook-box-fill"></i>
                      </a>
-                     <a href="www.youtube.com" target="_blank" class="footer__social-link">
+                     <a href="https://www.youtube.com" target="_blank" class="footer__social-link">
                         <i class="ri-youtube-line"></i>
                      </a>
-                     <a href="www.telegram.com" target="_blank" class="footer__social-link">
+                     <a href="https://www.telegram.com" target="_blank" class="footer__social-link">
                         <i class="ri-telegram-line"></i>
                      </a>
                   </div>
@@ -106,5 +106,63 @@
 
       <!--=============== MAIN JS ===============-->
       <script src="resources/js/main.js"></script>
+
+
+      <script 
+      src="https://sandbox.paypal.com/sdk/js?client-id=AVHmJ4T0nrI-wdIrVrfHs-UAJ4TPo5zSC0weYFV5K6AsREu7OxlvvIda7wwpjlrK7niiUM9gl9OAPAdj&buyer-country=US&currency=USD"
+      data-sdk-integration-source="developer-studio">
+      </script>
+
+      <script>
+         
+         paypal.Buttons({
+               style: {
+                  layout: 'vertical',
+                  color:  'gold',
+                  shape:  'pill',
+                  label:  'paypal'
+               },
+               createOrder: function(data, actions) {
+                   return actions.order.create({
+                       purchase_units: [{
+                           amount: {
+                               value: "<?php echo str_replace(',', '', $this->getData('total_amount', false)); ?>"
+                           },
+                       }, ],
+                   });
+               },
+               onApprove: function(data, actions) {
+                   return actions.order.capture().then(function(details) {
+                       // Get form data
+                       const name = document.querySelector('#name').value;
+                       const phone = document.querySelector('#phone').value;
+                       const address = document.querySelector('#address').value;   
+                  
+                  
+                       // Create form data
+                       const formData = new FormData(document.querySelector('#checkout-form'));
+                       formData.append('name', name);
+                       formData.append('phone', phone);
+                       formData.append('address', address);
+                       formData.append('paypal-checkout', '1');
+                  
+                       // Submit form data
+                       fetch("checkout.php", {
+                           method: "POST",
+                           body: formData
+                       })
+                       .then(response => response.text())
+                       .then(result => {
+                           window.location.href = 'success.php';
+                       })
+                       .catch(error => {
+                           console.error('Error:', error);
+                           alert('An error occurred during checkout. Please try again.');
+                       });
+                   });
+               }
+         }).render('#paypal-button-container');
+
+      </script>
    </body>
 </html>

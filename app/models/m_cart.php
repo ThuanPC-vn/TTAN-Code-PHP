@@ -138,34 +138,34 @@ class Cart
    * 
    * @access public
    * @param
-   * @return int
+   * @return string
    */
-  public function getTotalCost()
-  {
+public function getTotalCost()
+{
     $num = '0.00';
 
     if (isset($_SESSION['cart'])) {
-      // if items to display
-      // foreach ($_SESSION['cart'] as $item) {
-      //   $num = $num + $item;
-      // }
+        // get product prices
+        $ids = $this->get_ids();
 
-      //get product prices
-      $ids = $this->get_ids();
+        global $Products;
+        $prices = $Products->get_prices($ids);
 
-      global $Products;
-      $prices = $Products->get_prices($ids);
-
-      // loop through, adding the cost of each item x the number of the item in the cart to $num each time
-
-      if ($prices != NULL) {
-        foreach ($prices as $price) {
-          $num += doubleval($price['price'] * $_SESSION['cart'][$price['id']]);
+        // loop through, adding the cost of each item x the number of the item in the cart to $num each time
+        if ($prices != NULL) {
+            foreach ($prices as $price) {
+                $num += doubleval($price['price'] * $_SESSION['cart'][$price['id']]);
+            }
         }
-      }
     }
-    return $num;
-  }
+
+    // Convert price to integer
+    $price = intval($num);
+    // Format price with commas if greater than 1000
+    $formatted_num = $price >= 1000 ? number_format($price) : (string)$price;
+
+    return $formatted_num;
+}
 
 
 
@@ -215,6 +215,14 @@ class Cart
      if ($products != null) {
         
         foreach ($products as $product) {
+          $priceFormatBf = $product['price'] * $_SESSION['cart'][$product['id']];
+
+          // Convert price to integer
+          $price = intval($priceFormatBf);
+          // Format price with commas if greater than 1000
+          $formatted_price = $price >= 1000 ? number_format($price) : $price;
+
+
           $data .= '<div class="item">
                       <img src="'.  IMAGE_PATH . $product['img'] .'">
                       <div class="info">
@@ -222,7 +230,7 @@ class Cart
                         <div class="price">$'. $product['price'] .'/1 product</div>
                       </div>
                       <div class="quantity">'. $_SESSION['cart'][$product['id']] .'</div>
-                      <div class="returnPrice">$'. $product['price'] * $_SESSION['cart'][$product['id']] .'</div>
+                      <div class="returnPrice">$'. $formatted_price .'</div>
                     </div>';
           
           $shipping += ($this->getShippingCost($product['price'] * $_SESSION['cart'][$product['id']]));

@@ -1,9 +1,10 @@
 <?php
 include('app/init.php');
+
 $Template->setData('page_class', '');
 
 
-if ( isset($_POST['btn-checkout']) ){
+if ( isset($_POST['btn-checkout']) || isset($_POST['paypal-checkout'])){
     
     if(!empty($_POST['name']) && !empty($_POST['phone'])
     && !empty($_POST['address']) && !empty($_SESSION['cart'])){
@@ -18,7 +19,7 @@ if ( isset($_POST['btn-checkout']) ){
             $checkOut = $Checkout->insertData($fullName, $phoneNumber, $address, $products);
         }
 
-        if($checkOut == true){
+        if($checkOut === true){
             $Cart->empty_cart();
             $Template->redirect(SITE_PATH . 'success.php');
         }else{

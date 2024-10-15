@@ -64,6 +64,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 30px;
 }
 .container{
     max-width: 1200px;
@@ -71,6 +72,7 @@
     margin: 0 auto;
 }
 .product-div{
+    height: 70vh;
     margin: 1rem 0;
     padding: 2rem 0;
     display: grid;
@@ -85,10 +87,21 @@
 .product-div-right{
     padding: 20px;
 }
+
+.img-container{
+    display: flex;
+    width: 100%;
+    height: 30rem;
+    overflow: hidden;
+}
+
 .img-container img{
-    width: 200px;
+    width: 75%;
+    height: 80%;
+    border-radius: 1rem;
     margin: 0 auto;
 }
+
 .hover-container{
     display: flex;
     flex-wrap: wrap;
@@ -97,6 +110,7 @@
     margin-top: 32px;
 }
 .hover-container div{
+    height: 10vh;
     border: 2px solid rgba(252, 160, 175, 0.7);
     padding: 1rem;
     border-radius: .45rem;
@@ -106,10 +120,10 @@
     justify-content: center;
 }
 .active-product-detail{
-    border-color: rgb(255, 145, 163)!important;
+    border-color: rgb(255, 128, 149)!important;
 }
 .hover-container div:hover{
-    border-color: rgb(255, 145, 163);
+    border-color: rgb(253, 125, 146);
 }
 .hover-container div img{
     width: 50px;
@@ -187,8 +201,31 @@
     color: #000;
 }
 
-@media screen and (max-width: 992px){
+@media screen and (max-width: 1800px){
+    .main-wrapper{
+        margin-top: 10rem;
+    }
     .product-div{
+        height: 80vh;
+    }
+}
+
+@media screen and (max-width: 1800px){
+    .main-wrapper{
+        margin-top: 10rem;
+    }
+    .product-div{
+        height: 80vh;
+    }
+}
+
+
+@media screen and (max-width: 992px){
+    .main-wrapper{
+        margin-top: 10rem;
+    }
+    .product-div{
+        height: 140vh;
         grid-template-columns: 100%;
     }
     .product-div-right{
@@ -205,6 +242,29 @@
 }
 
 @media screen and (max-width: 400px){
+    .product-div{
+        height: 190vh;
+    }
+    .img-container{
+        height: 15rem; 
+    }
+    .img-container img{
+        width: 90%;
+        height: 100%;
+    }
+    .btn-groups button{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 320px){
+    .product-div{
+        height: 200vh;
+    }
+    .img-container img{
+        width: 90%;
+    }
     .btn-groups button{
         width: 100%;
         margin-bottom: 10px;

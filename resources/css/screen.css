@@ -198,6 +198,17 @@
   .product__card {
     width: 100% !important;
   }
+
+  .product-div{
+    height: 200vh;
+  }
+  .img-container img{
+    width: 90%;
+  }
+  .btn-groups button{
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 /* For iPhone 6 Plus */

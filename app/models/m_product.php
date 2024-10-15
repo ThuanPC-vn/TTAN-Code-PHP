@@ -56,7 +56,10 @@ class Products{
               }
               $items .= $item;
             }
-            $result = $this->Database->query("SELECT id_product, name_product, sub_name_product, img_product, price_product FROM $this->db_tableProduct WHERE id_product IN ($items) ORDER BY name_product");
+            $result = $this->Database->query("SELECT id_product, name_product, sub_name_product, description_product, img_product, price_product
+                                              FROM $this->db_tableProduct 
+                                              WHERE id_product IN ($items)
+                                              ORDER BY name_product");
             if ($result) {
               if ($result->num_rows > 0) {
                 while ($row = $result->fetch_array()) {
@@ -64,6 +67,7 @@ class Products{
                     'id' => $row['id_product'],
                     'mainName' => $row['name_product'],
                     'subName' => $row['sub_name_product'],
+                    'description' => $row['description_product'],
                     'price' => $row['price_product'],
                     'img' => $row['img_product']
                   );
@@ -74,7 +78,8 @@ class Products{
             $stmt = $this->Database->prepare("SELECT 
             $this->db_tableProduct.id_product, 
             $this->db_tableProduct.name_product, 
-            $this->db_tableProduct.sub_name_product, 
+            $this->db_tableProduct.sub_name_product,
+            $this->db_tableProduct.description_product, 
             $this->db_tableProduct.price_product,
             $this->db_tableProduct.img_product,
             categories.name_category as Category_name FROM $this->db_tableProduct 
@@ -90,12 +95,13 @@ class Products{
                 $prod_id = null;
                 $prod_name = null;
                 $prod_sub_name = null;
+                $prod_description = null;
                 $prod_price = null;
                 $prod_image = null;
                 $cat_name = null;
-                $stmt->bind_result($prod_id, $prod_name, $prod_sub_name, $prod_price, $prod_image, $cat_name);
+                $stmt->bind_result($prod_id, $prod_name, $prod_sub_name, $prod_description, $prod_price, $prod_image, $cat_name);
                 $stmt->fetch();
-                $data = array('id' => $prod_id, 'mainName' => $prod_name, 'subName' => $prod_sub_name, 'price' => $prod_price, 'img' => $prod_image, 'category_name' => $cat_name);
+                $data = array('id' => $prod_id, 'mainName' => $prod_name, 'subName' => $prod_sub_name, 'description' => $prod_description, 'price' => $prod_price, 'img' => $prod_image, 'category_name' => $cat_name);
               }
               $stmt->close();
             }
@@ -104,9 +110,10 @@ class Products{
             $result = $this->Database->query("SELECT 
                   $this->db_tableProduct.id_product, 
                   $this->db_tableProduct.name_product, 
-                  $this->db_tableProduct.sub_name_product, 
+                  $this->db_tableProduct.sub_name_product,
+                  $this->db_tableProduct.description_product, 
                   $this->db_tableProduct.price_product,
-                  $this->db_tableProduct.img_product, 
+                  $this->db_tableProduct.img_product,
                   categories.name_category as Category_name 
                   FROM $this->db_tableProduct 
                   INNER JOIN categories ON $this->db_tableProduct.id_category = categories.id_category ");
@@ -114,11 +121,12 @@ class Products{
               if ($result->num_rows > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     $data[] = array(
-                        'id' => $row['id_product'],
-                        'mainName' => $row['name_product'],
-                        'subName' => $row['sub_name_product'],
-                        'price' => $row['price_product'],
-                        'img' => $row['img_product'],);
+                      'id' => $row['id_product'],
+                      'mainName' => $row['name_product'],
+                      'subName' => $row['sub_name_product'],
+                      'description' => $row['description_product'],
+                      'price' => $row['price_product'],
+                      'img' => $row['img_product']);
                 }
               }
             }
@@ -139,33 +147,88 @@ class Products{
     public function get_in_category($id)
     {
       $data = array();
-      $stmt = $this->Database->prepare("SELECT 
-      id_product,
-      name_product,
-      sub_name_product,
-      img_product,
-      price_product FROM " . $this->db_tableProduct . " WHERE id_category = ? ORDER BY name_product");
+      $stmt = $this->Database->prepare("
+          SELECT 
+              p.id_product,
+              p.name_product,
+              p.sub_name_product,
+              p.description_product,
+              p.img_product,
+              p.price_product 
+          FROM " . $this->db_tableProduct . " p
+          LEFT JOIN categories_sub cs ON p.id_category_sub = cs.id
+          WHERE p.id_category = ? OR cs.id_category = ?
+          ORDER BY p.name_product
+      ");
 
       if ($stmt) {
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->store_result();
-        if ($stmt->num_rows > 0) {
-          $prod_id = null;
-          $prod_name = null;
-          $prod_subName = null;
-          $prod_image = null;
-          $prod_price = null;
-          $stmt->bind_result($prod_id, $prod_name, $prod_image, $prod_price);
-          while ($stmt->fetch()) {
-            $data[] = array('id' => $prod_id, 'mainName' => $prod_name, 'subName' => $prod_subName, 'price' => $prod_price, 'img' => $prod_image);
+          $stmt->bind_param("ii", $id, $id);
+          $stmt->execute();
+          $stmt->store_result();
+          if ($stmt->num_rows > 0) {
+              $prod_id = null;
+              $prod_name = null;
+              $prod_sub_name = null;
+              $prod_description = null;
+              $prod_price = null;
+              $prod_image = null;
+              $stmt->bind_result($prod_id, $prod_name, $prod_sub_name, $prod_description, $prod_image, $prod_price);
+              while ($stmt->fetch()) {
+                  $data[] = array(
+                      'id' => $prod_id,
+                      'mainName' => $prod_name,
+                      'subName' => $prod_sub_name,
+                      'description' => $prod_description,
+                      'price' => $prod_price,
+                      'img' => $prod_image
+                  );
+              }
+              $stmt->close();
+          }
+          return $data;
+      }
+    }
+
+
+
+    /**
+     * Retrieve product information for all products in specified sub-category
+     * 
+     * @access public
+     * @param int $sub_category_id
+     * @return array
+     */
+    public function get_in_SubCategory($sub_category_id) {
+      $data = array();
+      $stmt = $this->Database->prepare("SELECT id_product,
+                                               name_product,
+                                               sub_name_product,
+                                               description_product,
+                                               img_product,
+                                               price_product
+                                        FROM $this->db_tableProduct 
+                                        WHERE id_category_sub = ?");
+      if ($stmt) {
+          $stmt->bind_param("i", $sub_category_id);
+          $stmt->execute();
+          $result = $stmt->get_result();
+
+          while ($row = $result->fetch_assoc()) {
+              $data[] = array(
+                  'id' => $row['id_product'],
+                  'mainName' => $row['name_product'],
+                  'subName' => $row['sub_name_product'],
+                  'description' => $row['description_product'],
+                  'price' => $row['price_product'],
+                  'img' => $row['img_product']
+              );
           }
           $stmt->close();
-        }
-        return $data;
       }
-      
-    }
+      return $data;
+  }
+  
+
 
 
     /**
@@ -230,6 +293,45 @@ class Products{
     }
 
 
+
+    /**
+    * Function to get sub-image for product detail page
+    * 
+    * @access public
+    * @return int (optional)
+    * @return string HTML
+    */
+
+    public function getImgSub($id = null){
+
+      $data = array();
+      $html = '';
+
+      if ($id != null) {
+
+          $result = $this->Database->query("SELECT pi.img_product
+                                    FROM $this->db_tableProduct p
+                                    INNER JOIN products_img pi ON p.id_product = pi.id_product
+                                    WHERE p.id_product = $id");
+
+          if ($result && $result->num_rows > 0) {
+              while ($row = $result->fetch_array()) {
+                $data[] = array('imgSub' => $row['img_product']);
+              }
+          }
+
+          foreach ($data as $img) {
+              $html .= '<div><img alt="image" src="' . IMAGE_PATH . $img['imgSub'] . '"></div>';
+          }
+
+      } else {
+          $html .= "<p>Eror :(</p>";  
+      }
+       
+      return $html;
+    }
+
+
     /**
     * Create product using info from database
     *
@@ -242,16 +344,29 @@ class Products{
 
         //get products
         if ($category != NULL) {
-            $products = $this->get_in_category($category);
+            if (isset($_GET['id'])) {
+                $products = $this->get_in_category($category);
+            } else if (isset($_GET['id_category_sub'])) {
+                $products = $this->get_in_SubCategory($_GET['id_category_sub']);
+            } elseif (isset($_GET['query'])) {
+                $products = $this->searchProducts($_GET['query']);
+            } else {
+                $products = array(); // Hoặc xử lý lỗi nếu cần
+            }
         } else {
             $products = $this->getProductData();
         }
 
         $data = '';
 
-        if (is_array($products) &&!empty($products)) {
+        if (is_array($products) && !empty($products)) {
 
             foreach ($products as $product) {
+                // Convert price to integer
+                $price = intval($product['price']);
+                // Format price with commas if greater than 1000
+                $formatted_price = $price >= 1000 ? number_format($price) : $price;
+
                 $data .= '<article class="pro__all__card">
                         <div class="shape shape__smaller"></div>
 
@@ -259,7 +374,7 @@ class Products{
                         <h3 class="pro__all__subtitle">'. htmlspecialchars($product['subName']) .'</h3>
 
                         <img src="'. IMAGE_PATH . $product['img'] .'" alt="image" class="proall__img">
-                        <h3 class="pro__all__price">$ '. $product['price'] .'</h3>
+                        <h3 class="pro__all__price">$ '. $formatted_price .'</h3>
                         
                         <button class="product__buttonview button1">
                             <i class="ri-eye-line"></i>
@@ -276,6 +391,46 @@ class Products{
 
         return $data;
     }
+
+
+    /**
+     * Search products by query
+     * 
+     * @access public
+     * @param string $query
+     * @return array
+     */
+    public function searchProducts($query) {
+        $data = array();
+        $stmt = $this->Database->prepare("SELECT id_product, name_product, sub_name_product, description_product, img_product, price_product
+                                          FROM $this->db_tableProduct 
+                                          WHERE name_product LIKE ?
+                                          OR sub_name_product LIKE ?
+                                          OR description_product LIKE ?");
+        if ($stmt) {
+            $search_query = '%' . $query . '%';
+            $stmt->bind_param("sss", $search_query, $search_query, $search_query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            while ($row = $result->fetch_assoc()) {
+                $data[] = array(
+                    'id' => $row['id_product'],
+                    'mainName' => $row['name_product'],
+                    'subName' => $row['sub_name_product'],
+                    'description' => $row['description_product'],
+                    'price' => $row['price_product'],
+                    'img' => $row['img_product']
+                );
+            }
+            $stmt->close();
+        }
+        return $data;
+    }
+
+    
+
+
 }
 ?>
 

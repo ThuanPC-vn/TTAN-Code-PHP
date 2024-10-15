@@ -13,18 +13,16 @@ include("includes/public_header.php")
                         <div class = "img-container">
                             <img src = "<?php $this->getData('prod_image'); ?>" alt="product">
                         </div>
+                        
                         <div class = "hover-container">
-                            <div><img alt="image" src="<?php $this->getData('prod_image'); ?>"></div>
-                            <div><img alt="image" src="<?php $this->getData('prod_image'); ?>"></div>
-                            <div><img alt="image" src="<?php $this->getData('prod_image'); ?>"></div>
-                            <div><img alt="image" src="<?php $this->getData('prod_image'); ?>"></div>
-                            <div><img alt="image" src="<?php $this->getData('prod_image'); ?>"></div>
+                            <?php $this->getData('prod_imgSub'); ?>
                         </div>
+
                     </div>
 
                     <div class = "product-div-right">
-                        <span class = "product-name"><?php $this->getData('prod_mainName'); ?></span>
-                        <span class = "product-price"><?php $this->getData('prod_price'); ?></span>
+                        <span class = "product-name"><?php $this->getData('prod_mainName'); ?> | <?php $this->getData('prod_subName'); ?></span>
+                        <span class = "product-price">$ <?php $this->getData('prod_price'); ?></span>
                         <div class = "product-rating">
                             <span><i class="ri-star-fill"></i></span>
                             <span><i class="ri-star-fill"></i></span>
@@ -33,7 +31,7 @@ include("includes/public_header.php")
                             <span><i class="ri-star-half-fill"></i></span>
                             <span>(350 ratings)</span>
                         </div>
-                        <p class = "product-description"><?php $this->getData('prod_subName'); ?></p>
+                        <p class = "product-description"><?php $this->getData('prod_description'); ?></p>
                         <div class = "btn-groups">
                             <button type = "button" class = "add-cart-btn"><i class="ri-add-box-fill"></i>
                                 <a href="cart.php?id=<?php $this->getData('prod_id');?>">ADD TO CART</a>
