@@ -21,7 +21,8 @@ class User{
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
         $stmt = $this->Database->prepare("INSERT INTO " . $this->db_table . " 
-                                        (email, first_name, last_name, password) VALUES (?, ?, ?, ?)");
+                                        (email, first_name, last_name, password)
+                                        VALUES (?, ?, ?, ?)");
 
         $stmt->bind_param("ssss", $email, $first_name, $last_name, $hashed_password);
 
@@ -36,7 +37,7 @@ class User{
 
 
     /**
-     * Đăng nhập người dùng
+     * Login user
      * 
      * @access public
      * @param string, string

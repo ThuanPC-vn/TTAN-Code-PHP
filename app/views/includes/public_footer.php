@@ -126,7 +126,7 @@
                    return actions.order.create({
                        purchase_units: [{
                            amount: {
-                               value: "<?php echo str_replace(',', '', $this->getData('total_amount', false)); ?>"
+                               value: "<?php echo str_replace(',', '', $this->getData('total_amount_paypal', false)); ?>"
                            },
                        }, ],
                    });
@@ -136,7 +136,7 @@
                        // Get form data
                        const name = document.querySelector('#name').value;
                        const phone = document.querySelector('#phone').value;
-                       const address = document.querySelector('#address').value;   
+                       const address = document.querySelector('#address').value; 
                   
                   
                        // Create form data

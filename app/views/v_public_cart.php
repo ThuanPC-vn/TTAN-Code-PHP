@@ -21,7 +21,7 @@ include("includes/public_header.php")
                     <div class="right">
                         <h1>Checkout</h1>
 
-                        <form action="checkout.php" method="post">
+                        <form action="checkout.php" method="post" id="checkout-form">
                             <div class="form">
                                 <div class="group">
                                     <label for="name">Full Name</label>

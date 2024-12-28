@@ -47,6 +47,10 @@ if (isset($_GET['empty'])) {
 // }
 
 
+// Get the total amount from the cart for Paypal (return string)
+$totalAmountPayPal = $Cart->getTotalCostNoFormat();
+$Template->setData('total_amount_paypal', $totalAmountPayPal);
+
 // Get the total amount from the cart
 $totalAmount = $Cart->getTotalCost();
 $Template->setData('total_amount', $totalAmount);

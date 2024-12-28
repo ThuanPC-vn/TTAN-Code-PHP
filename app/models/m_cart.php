@@ -134,38 +134,69 @@ class Cart
 
 
   /**
-   * Return total cost of all items in the cart
-   * 
-   * @access public
-   * @param
-   * @return string
-   */
-public function getTotalCost()
-{
-    $num = '0.00';
+  * Return total cost of all items in the cart
+  * 
+  * @access public
+  * @param null
+  * @return string
+  */
+  public function getTotalCost()
+  {
+      $num = '0.00';
 
-    if (isset($_SESSION['cart'])) {
-        // get product prices
-        $ids = $this->get_ids();
+      if (isset($_SESSION['cart'])) {
+          // get product prices
+          $ids = $this->get_ids();
 
-        global $Products;
-        $prices = $Products->get_prices($ids);
+          global $Products;
+          $prices = $Products->get_prices($ids);
 
-        // loop through, adding the cost of each item x the number of the item in the cart to $num each time
-        if ($prices != NULL) {
-            foreach ($prices as $price) {
-                $num += doubleval($price['price'] * $_SESSION['cart'][$price['id']]);
-            }
-        }
-    }
+          // loop through, adding the cost of each item x the number of the item in the cart to $num each time
+          if ($prices != NULL) {
+              foreach ($prices as $price) {
+                  $num += doubleval($price['price'] * $_SESSION['cart'][$price['id']]);
+              }
+          }
+      }
 
-    // Convert price to integer
-    $price = intval($num);
-    // Format price with commas if greater than 1000
-    $formatted_num = $price >= 1000 ? number_format($price) : (string)$price;
+      // Convert price to integer
+      $price = intval($num);
+      // Format price with commas if greater than 1000
+      $formatted_num = $price >= 1000 ? number_format($price) : (string)$price;
 
-    return $formatted_num;
-}
+      return $formatted_num;
+  }
+
+
+  /**
+  * Return total cost of all items in the cart
+  * 
+  * @access public
+  * @param null
+  * @return string
+  */
+  public function getTotalCostNoFormat()
+  {
+      $num = '0.00';
+  
+      if (isset($_SESSION['cart'])) {
+          // get product prices
+          $ids = $this->get_ids();
+      
+          global $Products;
+          $prices = $Products->get_prices($ids);
+      
+          // loop through, adding the cost of each item x the number of the item in the cart to $num each time
+          if ($prices != NULL) {
+              foreach ($prices as $price) {
+                  $num += doubleval($price['price'] * $_SESSION['cart'][$price['id']]);
+              }
+          }
+
+          return $num;
+      }
+
+  }
 
 
 
